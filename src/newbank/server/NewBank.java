@@ -4,52 +4,39 @@ import java.util.HashMap;
 
 public class NewBank {
 	
-	private static final NewBank bank = new NewBank();
-	private HashMap<String,Customer> customers;
+	//private static final NewBank bank = new NewBank();
 	
-	private NewBank() {
-		customers = new HashMap<>();
-		addTestData();
+	private customerDB customers;
+	
+	public NewBank() {
+		customers = new customerDB();
 	}
 	
-	private void addTestData() {
-		Customer bhagy = new Customer("bhagy", "secretWord");
-		bhagy.addAccount(new Account("Main", 1000.0));
-		customers.put("Bhagy", bhagy);
-		
-		Customer christina = new Customer("Christina", "PASSWORD!!");
-		christina.addAccount(new Account("Savings", 1500.0));
-		customers.put("Christina", christina);
-		
-		Customer john = new Customer("John", "UniOfBaths");
-		john.addAccount(new Account("Checking", 250.0));
-		customers.put("John", john);
-	}
-	
+
+	/*
 	public static NewBank getBank() {
 		return bank;
-	}
+	}*/
 	
-	public synchronized CustomerID checkLogInDetails(String userName, String password) {
-		if(customers.containsKey(userName)) {
-			return new CustomerID(userName);
-		}
-		return null;
+	public synchronized Customer checkLogInDetails(String customerID, String password) {
+		return customers.getCustomer(customerID);
 	}
 
 	// commands from the NewBank customer are processed in this method
-	public synchronized String processRequest(CustomerID customer, String request) {
-		if(customers.containsKey(customer.getKey())) {
+	public synchronized String processRequest(String customerID, String request) {
+		Customer customer = customers.getCustomer(customerID);
+		if( customer != null ) {
 			switch(request) {
-			case "SHOWMYACCOUNTS" : return showMyAccounts(customer);
+			
+			case "SHOWMYACCOUNTS" : return showMyAccounts(customer.getCustomerID() );
 			default : return "FAIL";
 			}
 		}
 		return "FAIL";
 	}
 	
-	private String showMyAccounts(CustomerID customer) {
-		return (customers.get(customer.getKey())).accountsToString();
+	private String showMyAccounts(String customerID) {
+		return customers.getCustomer(customerID).accountsToString();
 	}
 
 }

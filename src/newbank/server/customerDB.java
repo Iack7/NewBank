@@ -31,12 +31,14 @@ public class customerDB {
 	
 	
 	private void addCustomer(Customer customer) {
-		String username = customer.getUsername();
-		customers.put(username, customer);
+		String customerID = customer.getCustomerID();
+		customers.put(customerID, customer);
 	}
 	
-	public Customer checkLogInDetails(String userName, String password) {
-		return null;
+	public Customer getCustomer(String customerID) {
+		return customers.get(customerID);
 	}
+	
+
 	
 }
