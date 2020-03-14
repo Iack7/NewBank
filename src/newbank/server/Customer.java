@@ -5,9 +5,13 @@ import java.util.ArrayList;
 public class Customer {
 	
 	private ArrayList<Account> accounts;
+	private String username;
+	private String password;
 	
-	public Customer() {
+	public Customer(String username, String password) {
 		accounts = new ArrayList<>();
+		this.username = username;
+		this.password = password;
 	}
 	
 	public String accountsToString() {
@@ -21,4 +25,23 @@ public class Customer {
 	public void addAccount(Account account) {
 		accounts.add(account);		
 	}
+	
+	
+	
+	/*
+	 * A function to set a new password. Password change is only allowed, if the old password is provided.
+	 * */
+	public boolean setNewPassword(String oldPassword, String newPassword) {
+		if (oldPassword == this.password) {
+			this.password = newPassword;
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public String getUsername() {
+		return this.username;
+	}
+	
 }
