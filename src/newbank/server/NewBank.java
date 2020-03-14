@@ -1,13 +1,11 @@
 package newbank.server;
 
-import java.util.HashMap;
-
 public class NewBank {
 		
-	private customerDB customers;
+	private CustomerDB customers;
 	
 	public NewBank() {
-		customers = new customerDB();
+		customers = new CustomerDB();
 	}
 	
 	public synchronized Customer checkLogInDetails(String customerID, String password) {
