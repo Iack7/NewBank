@@ -36,6 +36,7 @@ public class customerDB {
 	}
 	
 	public Customer getCustomer(String customerID) {
+		customerID = customerID.toLowerCase();
 		return customers.get(customerID);
 	}
 	

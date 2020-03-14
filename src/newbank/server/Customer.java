@@ -10,10 +10,8 @@ public class Customer {
 	
 	public Customer(String customerID, String password) {
 		accounts = new ArrayList<>();
-		this.customerID = customerID;
+		this.customerID = customerID.toLowerCase();
 		this.password = password;
-		
-		System.out.println(this.customerID);
 	}
 	
 	public String accountsToString() {
@@ -40,6 +38,11 @@ public class Customer {
 		} else {
 			return false;
 		}
+	}
+	
+	
+	public boolean checkPassword(String password) {
+		return this.password.equals(password);
 	}
 	
 	public String getCustomerID() {
