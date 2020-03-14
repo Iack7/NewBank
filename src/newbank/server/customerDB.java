@@ -30,10 +30,20 @@ public class customerDB {
 	}
 	
 	
-	private void addCustomer(Customer customer) {
+	public void addCustomer(Customer customer) {
 		String customerID = customer.getCustomerID();
 		customers.put(customerID, customer);
 	}
+	
+
+	public void updateCustomer(Customer customer) {
+		String customerID = customer.getCustomerID();
+		customers.replace(customerID, customer);
+	}
+	
+	
+	
+	
 	
 	public Customer getCustomer(String customerID) {
 		customerID = customerID.toLowerCase();

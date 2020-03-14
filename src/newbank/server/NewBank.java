@@ -25,17 +25,25 @@ public class NewBank {
 	public synchronized String processRequest(String customerID, String request) {
 		Customer customer = customers.getCustomer(customerID);
 		if( customer != null ) {
-			switch(request) {
-			
-			case "SHOWMYACCOUNTS" : return showMyAccounts(customer.getCustomerID() );
-			default : return "FAIL";
+			if (request.equals("SHOWMYACCOUNTS")) {
+				return showMyAccounts(customer );
+			} else if (request.startsWith("NEWACCOUNT")) {
+				String accountName = request.substring( request.indexOf(" ")+1);
+				return makeNewAccount(customer, accountName);
 			}
 		}
 		return "FAIL";
 	}
 	
-	private String showMyAccounts(String customerID) {
-		return customers.getCustomer(customerID).accountsToString();
+	private String showMyAccounts(Customer customer) {
+		return customer.accountsToString();
 	}
+	
+	private String makeNewAccount(Customer customer, String accountName) {
+		customer.addAccount( new Account(accountName, 0.0) );
+		customers.updateCustomer(customer);
+		return "SUCCESS";
+	}
+	
 
 }
