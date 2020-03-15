@@ -5,12 +5,12 @@ package newbank.server;
 
 import java.util.HashMap;
 
-public class customerDB {
+public class userDB {
 	
-	private HashMap<String,Customer> customers;
+	private HashMap<String,User> users;
 
-	public customerDB() {
-		customers = new HashMap<>();
+	public userDB() {
+		users = new HashMap<>();
 		addTestData();
 	}
 	
@@ -18,36 +18,36 @@ public class customerDB {
 	private void addTestData() {
 		Customer bhagy = new Customer("bhagy", "secretWord");
 		bhagy.addAccount(new Account("Main", 1000.0));
-		addCustomer(bhagy);
+		addUser(bhagy);
 		
 		Customer christina = new Customer("Christina", "PASSWORD!!");
 		christina.addAccount(new Account("Savings", 1500.0));
-		addCustomer(christina);
+		addUser(christina);
 		
 		Customer john = new Customer("John", "UniOfBaths");
 		john.addAccount(new Account("Checking", 250.0));
-		addCustomer(john);
+		addUser(john);
 	}
 	
 	
-	public void addCustomer(Customer customer) {
-		String customerID = customer.getCustomerID();
-		customers.put(customerID, customer);
+	public void addUser(User user) {
+		String userID = user.getUserID();
+		users.put(userID, user);
 	}
 	
 
-	public void updateCustomer(Customer customer) {
-		String customerID = customer.getCustomerID();
-		customers.replace(customerID, customer);
+	public void updateUser(User user) {
+		String userID = user.getUserID();
+		users.replace(userID, user);
 	}
 	
 	
 	
 	
 	
-	public Customer getCustomer(String customerID) {
-		customerID = customerID.toLowerCase();
-		return customers.get(customerID);
+	public User getUser(String userID) {
+		userID = userID.toLowerCase();
+		return users.get(userID);
 	}
 	
 

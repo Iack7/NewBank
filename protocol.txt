@@ -17,3 +17,6 @@ Returns SUCCESS or FAIL
 PAY <Person/Company> <Ammount>
 e.g. PAY John 100
 Returns SUCCESS or FAIL
+
+SHOWACCOUNTS <CustomerID>
+Returns all accounts of the customer with the provided customer ID. Only bankers can run this command.
