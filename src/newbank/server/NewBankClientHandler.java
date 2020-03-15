@@ -1,5 +1,8 @@
 package newbank.server;
 
+import newbank.server.model.Customer;
+import newbank.server.model.NewBank;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -52,6 +55,9 @@ public class NewBankClientHandler extends Thread{
 					out.println("\t Usage: PAY Savings John Main 10");
 					out.println("\t \t PAY <AccountFrom> <Customer> <AccountNumber> <Amount>"
 							+"\t\t\t:::From Customer's Selected account to  Recipient's account by AccountNumber ");
+
+					out.println("4. Show Transactions");
+					out.println("\t Usage: SHOWRANSACTIONS");
 
 					out.println("0. Logout");
 					out.println("\t Usage: LOGOUT");

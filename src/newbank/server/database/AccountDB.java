@@ -1,4 +1,6 @@
-package newbank.server;
+package newbank.server.database;
+
+import newbank.server.model.Account;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,12 +11,11 @@ public class AccountDB {
   private Long accountId;
   private static AccountDB instance;
 
-  private AccountDB() {}
-
-  public void initializeAccountDB() {
-    this.accountId = 1000000L;
-    this.accounts = new HashMap<>();
+  private AccountDB() {
+    accountId = 1291239L;
+    accounts = new HashMap<>();
   }
+
 
   public static synchronized AccountDB getInstance() {
     if (instance == null) {
@@ -28,12 +29,8 @@ public class AccountDB {
   }
 
   public Long addAccount(Account account) {
-    if (accountId == null) {
-      accountId = 1291239L;
-      accounts = new HashMap<>();
-    }
-    accountId++;
-    Long accountNumber = accountId ;
+     accountId++;
+    Long accountNumber = accountId;
     account.setAccountNumber(accountNumber);
     accounts.put(accountNumber, account);
     return accountNumber;
