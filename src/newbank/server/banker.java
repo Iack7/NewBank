@@ -2,9 +2,9 @@ package newbank.server;
 
 import java.util.ArrayList;
 
-public class banker extends User {
+public class Banker extends User {
 	
-	public banker(String bankerID, String password) {
+	public Banker(String bankerID, String password) {
 		super(bankerID, password);
 	}
 	

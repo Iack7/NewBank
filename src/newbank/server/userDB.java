@@ -5,11 +5,11 @@ package newbank.server;
 
 import java.util.HashMap;
 
-public class userDB {
+public class UserDB {
 	
 	private HashMap<String,User> users;
 
-	public userDB() {
+	public UserDB() {
 		users = new HashMap<>();
 		addTestData();
 	}

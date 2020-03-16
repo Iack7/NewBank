@@ -10,17 +10,13 @@ public abstract class User {
 		this.password = password;
 	}
 	
-	public String getUserType() {
-		return "generic";
-	}
-
-	
+	public abstract String getUserType();	
 	
 	/*
 	 * A function to set a new password. Password change is only allowed, if the old password is provided.
 	 * */
 	public boolean setNewPassword(String oldPassword, String newPassword) {
-		if (oldPassword == this.password) {
+		if (this.password.equals(oldPassword) ) {
 			this.password = newPassword;
 			return true;
 		} else {

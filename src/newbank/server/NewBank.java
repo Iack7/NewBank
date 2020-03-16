@@ -1,21 +1,19 @@
 package newbank.server;
 
-import java.util.HashMap;
-
 public class NewBank {
 		
-	private userDB users;
+	private UserDB users;
 	
 	public NewBank() {
-		users = new userDB();
+		users = new UserDB();
 	}
 	
 	public synchronized User checkLogInDetails(String userID, String password) {
-		User customer = users.getUser(userID);
-		if (customer == null) {
+		User user = users.getUser(userID);
+		if (user == null) {
 			return null;
-		} else if ( customer.checkPassword(password) ) {
-			return customer;
+		} else if ( user.checkPassword(password) ) {
+			return user;
 		} else {
 			return null;
 		}
