@@ -1,36 +1,49 @@
 package newbank.server;
 
-import java.util.HashMap;
-
 public class NewBank {
 		
-	private customerDB customers;
+	private UserDB users;
 	
 	public NewBank() {
-		customers = new customerDB();
+		users = new UserDB();
 	}
 	
-	public synchronized Customer checkLogInDetails(String customerID, String password) {
-		Customer customer = customers.getCustomer(customerID);
-		if (customer == null) {
+	public synchronized User checkLogInDetails(String userID, String password) {
+		User user = users.getUser(userID);
+		if (user == null) {
 			return null;
-		} else if ( customer.checkPassword(password) ) {
-			return customer;
+		} else if ( user.checkPassword(password) ) {
+			return user;
 		} else {
 			return null;
 		}
 	}
 
 	// commands from the NewBank customer are processed in this method
-	public synchronized String processRequest(String customerID, String request) {
-		Customer customer = customers.getCustomer(customerID);
-		if( customer != null ) {
+	public synchronized String processRequest(String userID, String request) {
+		User user = users.getUser(userID);
+		if( user != null ) {
+			
+			//Execute SHOWMYACCOUNTS if the user is a customer
 			if (request.equals("SHOWMYACCOUNTS")) {
-				return showMyAccounts(customer );
+				if (user.getUserType().equals("customer")) {
+					Customer customer = (Customer) user;
+					return showMyAccounts( customer );					
+				}
+			//Execute NEWACCOUNT if the user is a customer			
 			} else if (request.startsWith("NEWACCOUNT")) {
-				String accountName = request.substring( request.indexOf(" ")+1);
-				return makeNewAccount(customer, accountName);
+				if (user.getUserType().equals("customer")) {
+					Customer customer = (Customer) user;
+					String accountName = request.substring( request.indexOf(" ")+1);
+					return makeNewAccount(customer, accountName);				
+				}
+			//Execute SHOWACCOUNTS if the user is a customer			
+			} else if (request.startsWith("SHOWACCOUNTS")) {
+				if (user.getUserType().equals("banker")) {
+					return "FAIL"; //Here we have to implement the SHOWACCOUNTS function bankers.
+		}
 			}
+
 		}
 		return "FAIL";
 	}
@@ -41,7 +54,7 @@ public class NewBank {
 	
 	private String makeNewAccount(Customer customer, String accountName) {
 		customer.addAccount( new Account(accountName, 0.0) );
-		customers.updateCustomer(customer);
+		users.updateUser(customer);
 		return "SUCCESS";
 	}
 	
