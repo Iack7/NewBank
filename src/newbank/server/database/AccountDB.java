@@ -16,7 +16,6 @@ public class AccountDB {
     accounts = new HashMap<>();
   }
 
-
   public static synchronized AccountDB getInstance() {
     if (instance == null) {
       instance = new AccountDB();
@@ -29,7 +28,7 @@ public class AccountDB {
   }
 
   public Long addAccount(Account account) {
-     accountId++;
+    accountId++;
     Long accountNumber = accountId;
     account.setAccountNumber(accountNumber);
     accounts.put(accountNumber, account);

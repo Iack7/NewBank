@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
 public class TransactionDB {
   private ArrayList<Transaction> transactions;
   private Long transactionId;
+  private static TransactionDB instance;
 
-  private TransactionDB(){
+  private TransactionDB() {
     this.transactions = new ArrayList<>();
     this.transactionId = 0L;
   }
-  private static TransactionDB instance;
 
   public static synchronized TransactionDB getInstance() {
     if (instance == null) {
@@ -27,7 +27,7 @@ public class TransactionDB {
   }
 
   public void addTransaction(Transaction transaction) {
-    transactionId ++;
+    transactionId++;
     transaction.setTransactionId(transactionId);
     this.transactions.add(transaction);
   }

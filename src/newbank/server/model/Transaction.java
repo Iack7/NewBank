@@ -1,7 +1,8 @@
 package newbank.server.model;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 public class Transaction {
   private long transactionId;
@@ -10,17 +11,17 @@ public class Transaction {
   private Account toAccount;
   private double amount;
 
+
   public Transaction(Account fromAccount, Account toAccount, double amount) {
     this.fromAccount = fromAccount;
     this.toAccount = toAccount;
     this.amount = amount;
-    this.time = Calendar.getInstance().getTimeInMillis();
+    this.time = Instant.now().toEpochMilli();
   }
 
   public String getTimeString() {
-    Date date = new Date();
-    date.setTime(this.time);
-    return (date.toString());
+    DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss a").withZone(ZoneId.systemDefault());
+    return DATE_TIME_FORMATTER.format(Instant.ofEpochMilli(this.time));
   }
 
   public void setTime(long time) {
@@ -44,9 +45,7 @@ public class Transaction {
   }
 
   public String toString() {
-    Date date = new Date();
-    date.setTime(this.time);
-    return (date.toString()
+    return (this.getTimeString()
         + " \t|\t "
         + fromAccount.getCustomer().getCustomerID()
         + "\t|\t "

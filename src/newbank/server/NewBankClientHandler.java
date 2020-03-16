@@ -57,7 +57,7 @@ public class NewBankClientHandler extends Thread{
 							+"\t\t\t:::From Customer's Selected account to  Recipient's account by AccountNumber ");
 
 					out.println("4. Show Transactions");
-					out.println("\t Usage: SHOWRANSACTIONS");
+					out.println("\t Usage: SHOWTRANSACTIONS");
 
 					out.println("0. Logout");
 					out.println("\t Usage: LOGOUT");

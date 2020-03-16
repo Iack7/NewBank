@@ -32,7 +32,7 @@ public class NewBank {
       if (request.equals("SHOWMYACCOUNTS")) {
         return showMyAccounts(customer);
 
-      } else if (request.startsWith("SHOWRANSACTIONS")) {
+      } else if (request.startsWith("SHOWTRANSACTIONS")) {
         return showTransactionsByCustomer(customer, request);
 
       } else if (request.startsWith("NEWACCOUNT")) {
