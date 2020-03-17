@@ -3,15 +3,15 @@ package newbank.server;
 import java.util.ArrayList;
 
 public class Customer extends User{
-	
-	private ArrayList<Account> accounts;
-	
+
+    private Set<Account> accounts;
+
 	public Customer(String customerID, String password) {
 		super(customerID, password);
-		accounts = new ArrayList<>();
+        accounts = new HashSet<Account>();
 	}
-	
-	
+
+
 	@Override
 	public String getUserType() {
 		return "customer";
@@ -28,5 +28,12 @@ public class Customer extends User{
 	public void addAccount(Account account) {
 		accounts.add(account);		
 	}
-	
+    /**
+     * Getter for the Accounts.
+     *
+     * @return the accounts
+     */
+    public Set<Account> getAccounts() {
+        return accounts;
+    }
 }

@@ -41,15 +41,8 @@ public class UserDB {
 		users.replace(userID, user);
 	}
 	
-	
-	
-	
-	
-	public User getUser(String userID) {
+		public User getUser(String userID) {
 		userID = userID.toLowerCase();
 		return users.get(userID);
-	}
-	
-
-	
+  }
 }

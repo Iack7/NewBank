@@ -11,8 +11,7 @@ public class NewBankClientHandler extends Thread{
 	private NewBank bank;
 	private BufferedReader in;
 	private PrintWriter out;
-	
-	
+
 	public NewBankClientHandler(Socket s) throws IOException {
 		bank = new NewBank();
 		in = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -72,22 +71,20 @@ public class NewBankClientHandler extends Thread{
 						}
 					}
 				} else {
-					out.println("Log In Failed");
-					out.println("Please try again!\n");
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		finally {
-			try {
-				in.close();
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-				Thread.currentThread().interrupt();
-			}
-		}
-	}
-
+          out.println("Log In Failed");
+          out.println("Please try again!\n");
+        }
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        in.close();
+        out.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+        Thread.currentThread().interrupt();
+      }
+    }
+  }
 }
