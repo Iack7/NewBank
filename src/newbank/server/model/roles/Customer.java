@@ -1,30 +1,31 @@
-package newbank.server.model;
+package newbank.server.model.roles;
 
 import newbank.server.database.AccountDB;
 import newbank.server.database.TransactionDB;
+import newbank.server.model.Account;
+import newbank.server.model.Transaction;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-public class Customer {
+public class Customer extends User {
 
-  private ArrayList<Long> accountNumbers;
-  private String customerID;
-  private String password;
+  private Set<Account> accounts;
   private AccountDB accountDB = AccountDB.getInstance();
   private TransactionDB transactionDB = TransactionDB.getInstance();
 
-  public Customer(String customerID, String password) {
-    accountNumbers = new ArrayList<>();
-    this.customerID = customerID.toLowerCase();
-    this.password = password;
+  public Customer(String userId, String password) {
+    super(userId, password);
+    accounts = new HashSet<>();
+  }
+
+  @Override
+  public String getUserType() {
+    return "customer";
   }
 
   public String accountsToString() {
     String s = "";
-    for (Long a : accountNumbers) {
-      Account ac = accountDB.getAccountByNumber(a);
+    for (Account ac : accounts) {
       s += ac.toString() + "\n";
     }
     return s;
@@ -43,10 +44,12 @@ public class Customer {
             transaction.getTransactionId()
                 + " \t|\t "
                 + transaction.getTimeString()
+                    + " \t|\t "
+                    + transaction.getAmount()
                 + " \t|\t "
                 + transactionType
                 + "\t| To: "
-                + transaction.getToAccount().getCustomer().getCustomerID()
+                + transaction.getToAccount().getCustomer().getUserID()
                 + "\t| Account Number: "
                 + transaction.getToAccount().getAccountNumber()
                 + "\t|\t "
@@ -59,10 +62,12 @@ public class Customer {
             transaction.getTransactionId()
                 + " \t|\t "
                 + transaction.getTimeString()
+                    + " \t|\t "
+                    + transaction.getAmount()
                 + " \t|\t "
                 + transactionType
                 + "\t| From: "
-                + transaction.getFromAccount().getCustomer().getCustomerID()
+                + transaction.getFromAccount().getCustomer().getUserID()
                 + "\t| Account Number: "
                 + transaction.getFromAccount().getAccountNumber()
                 + "\t|\t "
@@ -75,7 +80,9 @@ public class Customer {
                 + " \t|\t "
                 + transaction.getTimeString()
                 + " \t|\t "
-                + transactionType
+                + transaction.getTimeString()
+                + " \t|\t "
+                + transaction.getAmount()
                 + "\t| From: "
                 + transaction.getFromAccount().getAccountName()
                 + "("
@@ -101,42 +108,37 @@ public class Customer {
     return s;
   }
 
-  public void addAccount(Account account) {
-    Long accountNumber = accountDB.addAccount(account);
-    accountNumbers.add(accountNumber);
-  }
-
-  /*
-   * A function to set a new password. Password change is only allowed, if the old password is provided.
-   * */
-  public boolean setNewPassword(String oldPassword, String newPassword) {
-    if (oldPassword == this.password) {
-      this.password = newPassword;
+  public boolean addAccount(Account account) {
+    Boolean exists =
+        this.accounts.stream()
+            .filter(ac -> ac.getAccountName().equals(account.getAccountName()))
+            .findAny()
+            .isPresent();
+    if (!exists) {
+      Account acc = accountDB.addAccount(account);
+      accounts.add(acc);
       return true;
     } else {
       return false;
     }
   }
 
-  public boolean checkPassword(String password) {
-    return this.password.equals(password);
+  public Optional<Account> getDefaultAccount() {
+    return this.accounts.stream().findFirst();
   }
 
-  public String getCustomerID() {
-    return this.customerID;
+  public Optional<Account> getAccount(String accountName) {
+    return this.accounts.stream()
+        .filter(ac -> ac.getAccountName().equals(accountName.trim()))
+        .findAny();
   }
 
-  public Account getDefaultAccount() {
-    long account = this.accountNumbers.get(0);
-    return accountDB.getAccountByNumber(account);
-  }
-
-  public Account getAccount(String accountName) {
-    Optional<Long> accountNumber =
-        this.accountNumbers.stream()
-            .filter(
-                ac -> accountDB.getAccountByNumber(ac).getAccountName().equals(accountName.trim()))
-            .findFirst();
-    return accountDB.getAccountByNumber(accountNumber.orElse(this.accountNumbers.get(0)));
+  /**
+   * Getter for the Accounts.
+   *
+   * @return the accounts
+   */
+  public Set<Account> getAccounts() {
+    return accounts;
   }
 }

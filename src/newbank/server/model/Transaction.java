@@ -11,7 +11,6 @@ public class Transaction {
   private Account toAccount;
   private double amount;
 
-
   public Transaction(Account fromAccount, Account toAccount, double amount) {
     this.fromAccount = fromAccount;
     this.toAccount = toAccount;
@@ -20,7 +19,8 @@ public class Transaction {
   }
 
   public String getTimeString() {
-    DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss a").withZone(ZoneId.systemDefault());
+    DateTimeFormatter DATE_TIME_FORMATTER =
+        DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss a").withZone(ZoneId.systemDefault());
     return DATE_TIME_FORMATTER.format(Instant.ofEpochMilli(this.time));
   }
 
@@ -47,11 +47,11 @@ public class Transaction {
   public String toString() {
     return (this.getTimeString()
         + " \t|\t "
-        + fromAccount.getCustomer().getCustomerID()
+        + fromAccount.getCustomer().getUserID()
         + "\t|\t "
         + fromAccount.getAccountName()
         + "\t|\t "
-        + toAccount.getCustomer().getCustomerID()
+        + toAccount.getCustomer().getUserID()
         + "\t|\t "
         + toAccount.getAccountName()
         + "\t|\t "
@@ -64,5 +64,13 @@ public class Transaction {
 
   public void setTransactionId(long transactionId) {
     this.transactionId = transactionId;
+  }
+
+  public double getAmount() {
+    return amount;
+  }
+
+  public void setAmount(double amount) {
+    this.amount = amount;
   }
 }

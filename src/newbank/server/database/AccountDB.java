@@ -27,12 +27,12 @@ public class AccountDB {
     return accounts;
   }
 
-  public Long addAccount(Account account) {
+  public Account addAccount(Account account) {
     accountId++;
     Long accountNumber = accountId;
     account.setAccountNumber(accountNumber);
     accounts.put(accountNumber, account);
-    return accountNumber;
+    return account;
   }
 
   public Account getAccountByNumber(String accountNumber) {

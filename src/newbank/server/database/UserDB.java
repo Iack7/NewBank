@@ -4,46 +4,50 @@ package newbank.server.database;
  */
 
 import newbank.server.model.Account;
-import newbank.server.model.Customer;
+import newbank.server.model.roles.Banker;
+import newbank.server.model.roles.Customer;
+import newbank.server.model.roles.User;
 
 import java.util.HashMap;
 
-public class CustomerDB {
+public class UserDB {
 
-  private HashMap<String, Customer> customers;
+  private HashMap<String, User> users;
 
-  public CustomerDB() {
-    customers = new HashMap<>();
+  public UserDB() {
+    users = new HashMap<>();
     addTestData();
   }
 
   private void addTestData() {
     Customer bhagy = new Customer("bhagy", "secretWord");
     bhagy.addAccount(new Account("Main", 1000.0, bhagy));
-    addCustomer(bhagy);
+    addUser(bhagy);
 
     Customer christina = new Customer("Christina", "PASSWORD!!");
     christina.addAccount(new Account("Savings", 1500.0, christina));
-    addCustomer(christina);
+    addUser(christina);
 
     Customer john = new Customer("John", "UniOfBaths");
     john.addAccount(new Account("Savings", 1500.0, john));
     john.addAccount(new Account("Checking", 250.0, john));
-    addCustomer(john);
+    addUser(john);
+    Banker donald = new Banker("Donald", "Donald");
+    addUser(donald);
   }
 
-  public void addCustomer(Customer customer) {
-    String customerID = customer.getCustomerID();
-    customers.put(customerID, customer);
+  public void addUser(User user) {
+    String userId = user.getUserID();
+    users.put(userId, user);
   }
 
-  public void updateCustomer(Customer customer) {
-    String customerID = customer.getCustomerID();
-    customers.replace(customerID, customer);
+  public void updateUser(User user) {
+    String userId = user.getUserID();
+    users.replace(userId, user);
   }
 
-  public Customer getCustomer(String customerID) {
-    customerID = customerID.toLowerCase();
-    return customers.get(customerID);
+  public User getUser(String userId) {
+    userId = userId.toLowerCase();
+    return users.get(userId);
   }
 }

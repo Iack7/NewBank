@@ -1,8 +1,10 @@
 package newbank.server.model;
 
 import newbank.server.database.TransactionDB;
+import newbank.server.model.roles.Customer;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Account {
 
@@ -13,6 +15,28 @@ public class Account {
 
   private Customer customer;
 
+  public Account(String accountName, double openingBalance) {
+    this.accountName = accountName;
+    this.balance = balance;
+    this.customer = customer;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(accountName, accountNumber);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o instanceof Account) {
+      Account account = (Account) o;
+      return this.accountName != null
+          && this.accountName.equals(account.accountName)
+          && this.accountNumber != (account.accountNumber);
+    }
+    return false;
+  }
+
   public Account(String accountName, double openingBalance, Customer customer) {
     this.accountName = accountName;
     this.balance = openingBalance;
@@ -20,7 +44,7 @@ public class Account {
   }
 
   public String toString() {
-    return (customer.getCustomerID()
+    return (customer.getUserID()
         + " : "
         + String.format("%09d", accountNumber)
         + ": "
@@ -44,7 +68,7 @@ public class Account {
     return completionStatus;
   }
 
-  public boolean debit(double amount) throws Exception {
+  public boolean deduct(double amount) throws Exception {
     boolean transferComplete = false;
 
     if (this.balance > amount && amount > 0) {
@@ -87,58 +111,64 @@ public class Account {
       String transactionType;
       String name;
       if (transaction.getFromAccount() == this
-              && transaction.getToAccount().getCustomer()
+          && transaction.getToAccount().getCustomer()
               != transaction.getFromAccount().getCustomer()) {
         transactionType = "DEBIT";
         s +=
-                transaction.getTransactionId()
-                        + " \t|\t "
-                        + transaction.getTimeString()
-                        + " \t|\t "
-                        + transactionType
-                        + "\t| To: "
-                        + transaction.getToAccount().getCustomer().getCustomerID()
-                        + "\t| Account Number: "
-                        + transaction.getToAccount().getAccountNumber()
-                        + "\t|\t "
-                        + "\n";
-      } else if (transaction.getToAccount()  == this
-              && transaction.getToAccount().getCustomer()
+            transaction.getTransactionId()
+                + " \t|\t "
+                + transaction.getTimeString()
+                + " \t|\t "
+                + transaction.getAmount()
+                + " \t|\t "
+                + transactionType
+                + "\t| To: "
+                + transaction.getToAccount().getCustomer().getUserID()
+                + "\t| Account Number: "
+                + transaction.getToAccount().getAccountNumber()
+                + "\t|\t "
+                + "\n";
+      } else if (transaction.getToAccount() == this
+          && transaction.getToAccount().getCustomer()
               != transaction.getFromAccount().getCustomer()) {
         transactionType = "CREDIT";
         s +=
-                transaction.getTransactionId()
-                        + " \t|\t "
-                        + transaction.getTimeString()
-                        + " \t|\t "
-                        + transactionType
-                        + "\t| From: "
-                        + transaction.getFromAccount().getCustomer().getCustomerID()
-                        + "\t| Account Number: "
-                        + transaction.getFromAccount().getAccountNumber()
-                        + "\t|\t "
-                        + "\n";
+            transaction.getTransactionId()
+                + " \t|\t "
+                + transaction.getTimeString()
+                + " \t|\t "
+                + transaction.getAmount()
+                + " \t|\t "
+                + transactionType
+                + "\t| From: "
+                + transaction.getFromAccount().getCustomer().getUserID()
+                + "\t| Account Number: "
+                + transaction.getFromAccount().getAccountNumber()
+                + "\t|\t "
+                + "\n";
       } else if (transaction.getToAccount().getCustomer()
-              == transaction.getFromAccount().getCustomer()) {
+          == transaction.getFromAccount().getCustomer()) {
         transactionType = "MOVED";
         s +=
-                transaction.getTransactionId()
-                        + " \t|\t "
-                        + transaction.getTimeString()
-                        + " \t|\t "
-                        + transactionType
-                        + "\t| From: "
-                        + transaction.getFromAccount().getAccountName()
-                        + "("
-                        + transaction.getFromAccount().getAccountNumber()
-                        + ")"
-                        + "\t| To: "
-                        + transaction.getToAccount().getAccountName()
-                        + "("
-                        + transaction.getToAccount().getAccountNumber()
-                        + ")"
-                        + "\t|\t "
-                        + "\n";
+            transaction.getTransactionId()
+                + " \t|\t "
+                + transaction.getTimeString()
+                + " \t|\t "
+                + transaction.getAmount()
+                + " \t|\t "
+                + transactionType
+                + "\t| From: "
+                + transaction.getFromAccount().getAccountName()
+                + "("
+                + transaction.getFromAccount().getAccountNumber()
+                + ")"
+                + "\t| To: "
+                + transaction.getToAccount().getAccountName()
+                + "("
+                + transaction.getToAccount().getAccountNumber()
+                + ")"
+                + "\t|\t "
+                + "\n";
       }
     }
     return s;
