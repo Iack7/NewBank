@@ -1,30 +1,15 @@
-#############################################
-#############################################
-######    D E S C R I P T I O N   ###########
-#############################################
-#############################################
-This is the newBank Java application.
+# DESCRIPTION
 
+This is the NewBank Java application.
 
-#############################################
-#############################################
-########    C H A N G E L O G   #############
-#############################################
-#############################################
-@ThomasKopsch
- Added a username and password field to the class Customer. Added a method to set a new password.
+This document details the protocol for interacting with the NewBank server.  
 
-@ThomasKopsch
-Handling erroneous user data
+A customer enters the command below and sees the messages returned:
 
-@ThomasKopsch
-Updated project structure
-
-@Iack7
-Add files via upload
-
-@Iack7
-Add files via upload
-
-@Iack7
-Initial commit 
+Command | Description
+--------|------------
+`SHOWMYACCOUNTS` | Returns a list of all the customers accounts along with their current balance e.g. Main: 1000.0 
+`SHOWACCOUNTS <CustomerID>` | Returns all accounts of the customer with the provided customer ID. Only bankers can run this command.
+`NEWACCOUNT <Name>` | e.g. `NEWACCOUNT Savings` returns `SUCCESS` or `FAIL`
+`MOVE <Amount> <From> <To>` | e.g. `MOVE 100 Main Savings` returns `SUCCESS` or `FAIL`
+`PAY <Person/Company> <Ammount>` | e.g. `PAY John 100` returns `SUCCESS` or `FAIL`

@@ -1,2 +1,4 @@
+.DS_Store
+bin
 *.class
 google-java-format-1.7-all-deps.jar

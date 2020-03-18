@@ -1,39 +1,54 @@
 package newbank.server;
 
+import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Set;
 
 public class NewBank {
 
-  private static final String SPACE = " ";
+  private static final String SPACE = "\\s+";
 
-  private CustomerDB customers;
+  private UserDB users;
 
   public NewBank() {
-    customers = new CustomerDB();
+    users = new UserDB();
   }
 
-  public synchronized Customer checkLogInDetails(String customerID, String password) {
-    Customer customer = customers.getCustomer(customerID);
-    if (customer == null) {
+  public synchronized User checkLogInDetails(String userID, String password) {
+    User user = users.getUser(userID);
+    if (user == null) {
       return null;
-    } else if (customer.checkPassword(password)) {
-      return customer;
+    } else if (user.checkPassword(password)) {
+      return user;
     } else {
       return null;
     }
   }
 
   // commands from the NewBank customer are processed in this method
-  public synchronized String processRequest(String customerID, String request) {
-    Customer customer = customers.getCustomer(customerID);
-    if (customer != null) {
+  public synchronized String processRequest(String userID, String request) {
+    User user = users.getUser(userID);
+    if (user != null) {
+
+      // Execute SHOWMYACCOUNTS if the user is a customer
       if (request.equals("SHOWMYACCOUNTS")) {
-        return showMyAccounts(customer);
+        if (user.getUserType().equals("customer")) {
+          Customer customer = (Customer) user;
+          return showMyAccounts(customer);
+        }
+        // Execute NEWACCOUNT if the user is a customer
       } else if (request.startsWith("NEWACCOUNT")) {
-        String accountName = request.substring(request.indexOf(SPACE) + 1);
-        return makeNewAccount(customer, accountName);
+        if (user.getUserType().equals("customer")) {
+          Customer customer = (Customer) user;
+          String accountName = request.substring(request.indexOf(SPACE) + 1);
+          return makeNewAccount(customer, accountName);
+        }
+        // Execute SHOWACCOUNTS if the user is a customer
+      } else if (request.startsWith("SHOWACCOUNTS")) {
+        if (user.getUserType().equals("banker")) {
+          return "FAIL"; // Here we have to implement the SHOWACCOUNTS function bankers.
+        }
       } else if (request.startsWith("MOVE")) {
+        Customer customer = (Customer) user;
         return moveMoney(customer, request.split(SPACE));
       }
     }
@@ -46,7 +61,7 @@ public class NewBank {
 
   private String makeNewAccount(Customer customer, String accountName) {
     customer.addAccount(new Account(accountName, 0.0));
-    customers.updateCustomer(customer);
+    users.updateUser(customer);
     return "SUCCESS";
   }
 
@@ -92,7 +107,8 @@ public class NewBank {
       return "SUCCESS";
     }
 
-    Set<Account> accounts = customer.getAccounts();
+    // TODO: Account uniqeness is still open
+    ArrayList<Account> accounts = customer.getAccounts();
     Account fromAccount = findAccount(accounts, from);
     if (fromAccount == null) {
       System.err.printf("MOVE command: An account with the given name: %s was not found!\n", from);
@@ -116,7 +132,7 @@ public class NewBank {
   }
 
   // TODO: Code should be adapted after we define an identity for class Account
-  private static Account findAccount(Set<Account> accounts, String accountName) {
+  private static Account findAccount(ArrayList<Account> accounts, String accountName) {
     Optional<Account> fromAccount =
         accounts.stream()
             // The account.getAccountName() should be passed to avoid NPE
