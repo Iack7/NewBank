@@ -12,7 +12,7 @@ Command | Description
 
 ## Code Syle
 
-Please install the plugin or the JAR file of the [Google Java Format](https://github.com/google/google-java-format) before you check in the code. This will help the process of merge a lot.
+Please install the plugin or the JAR file of the [Google Java Format](https://github.com/google/google-java-format) before you check in the code. This will help the merge process a lot.
 
 If you decide to install the JAR file. Please put it in the root of this directory (don't worry I have added the JAR to ignore list). The following command should be executed:
 
