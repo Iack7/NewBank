@@ -1,6 +1,5 @@
 package newbank.server;
 
-
 public class Banker extends User {
 
   public Banker(String bankerID, String password) {

@@ -27,4 +27,13 @@ public class Customer extends User {
   public void addAccount(Account account) {
     accounts.add(account);
   }
+
+  /**
+   * Getter for the Accounts.
+   *
+   * @return the accounts
+   */
+  public ArrayList<Account> getAccounts() {
+    return accounts;
+  }
 }

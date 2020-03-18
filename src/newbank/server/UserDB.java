@@ -1,10 +1,10 @@
 package newbank.server;
-/*
- * This class is a database of all customers. The database allows (i) to add new custmers and (ii) to search the database by username.
- */
 
 import java.util.HashMap;
 
+/*
+ * This class is a database of all customers. The database allows (i) to add new custmers and (ii) to search the database by username.
+ */
 public class UserDB {
 
   private HashMap<String, User> users;
