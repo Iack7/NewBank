@@ -1,6 +1,4 @@
-package newbank.server;
-
-import java.util.ArrayList;
+package newbank.server.model.roles;
 
 public class Banker extends User {
 	
