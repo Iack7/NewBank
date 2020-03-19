@@ -1,4 +1,4 @@
-package newbank.server;
+package newbank.server.model.roles;
 
 public abstract class User {
 
