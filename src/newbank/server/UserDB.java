@@ -13,18 +13,20 @@ public class UserDB {
 		users = new HashMap<>();
 		addTestData();
 	}
-	
 
 	private void addTestData() {
-		Customer bhagy = new Customer("bhagy", "secretWord");
+		// Password = "secretWord"
+		Customer bhagy = new Customer("bhagy", "a11263470cc4ebdcf55c16cc8752e9dc");
 		bhagy.addAccount(new Account("Main", 1000.0));
 		addUser(bhagy);
-		
-		Customer christina = new Customer("Christina", "PASSWORD!!");
+
+		// Password = "PASSWORD!!"
+		Customer christina = new Customer("Christina", "4265f8f5fbfe0bfec65323c6207b799e");
 		christina.addAccount(new Account("Savings", 1500.0));
 		addUser(christina);
-		
-		Customer john = new Customer("John", "UniOfBaths");
+
+		// Password = "UniOfBaths"
+		Customer john = new Customer("John", "4de5731b374a36a3ffbd8933bfd095ef");
 		john.addAccount(new Account("Checking", 250.0));
 		addUser(john);
 	}
@@ -40,16 +42,10 @@ public class UserDB {
 		String userID = user.getUserID();
 		users.replace(userID, user);
 	}
-	
-	
-	
-	
-	
+
 	public User getUser(String userID) {
 		userID = userID.toLowerCase();
 		return users.get(userID);
 	}
-	
 
-	
 }

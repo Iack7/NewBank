@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Customer extends User{
 	
 	private ArrayList<Account> accounts;
-	
+
 	public Customer(String customerID, String password) {
 		super(customerID, password);
 		accounts = new ArrayList<>();

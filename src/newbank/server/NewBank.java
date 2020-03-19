@@ -1,5 +1,7 @@
 package newbank.server;
 
+import java.security.NoSuchAlgorithmException;
+
 public class NewBank {
 		
 	private UserDB users;
@@ -37,11 +39,14 @@ public class NewBank {
 					String accountName = request.substring( request.indexOf(" ")+1);
 					return makeNewAccount(customer, accountName);				
 				}
-			//Execute SHOWACCOUNTS if the user is a customer			
+			//Execute SHOWACCOUNTS if the user is a banker
 			} else if (request.startsWith("SHOWACCOUNTS")) {
 				if (user.getUserType().equals("banker")) {
 					return "FAIL"; //Here we have to implement the SHOWACCOUNTS function bankers.
-		}
+				}
+				// Execute NEWPASSWORD for any user (Usage NEWPASSWORD <currentPassword> <newPassword>)
+			} else if (request.startsWith("NEWPASSWORD")) {
+				return  user.setNewPassword(request.split(" ")[1], request.split(" ")[2]);
 			}
 
 		}
@@ -57,6 +62,5 @@ public class NewBank {
 		users.updateUser(customer);
 		return "SUCCESS";
 	}
-	
 
 }
