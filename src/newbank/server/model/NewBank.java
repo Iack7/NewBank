@@ -47,6 +47,8 @@ public class NewBank {
           return initatePay(customer, request);
         } else if (request.startsWith("MOVE")) {
           return moveMoney(customer, request.split("\\s+"));
+        } else if (request.startsWith("NEWPASSWORD")) {
+          return setNewPassword(customer, request);
         }
       } else if (request.startsWith("LOGOUT")) {
         return "LOGOUT";
@@ -278,4 +280,16 @@ public class NewBank {
 
     return fromAccount.isPresent() ? fromAccount.get() : null;
   }
+
+  // Change password for any user
+  private static String setNewPassword(User user, String request) {
+    try {
+      String currentPassword = request.split(" ")[1];
+      String newPassword = request.split(" ")[2];
+        return user.setNewPassword(currentPassword, newPassword);
+    } catch(ArrayIndexOutOfBoundsException e) {
+      return "Failed - incorrect usage (NEWPASSWORD <currentPassword> <newPassword>)";
+    }
+  }
+
 }

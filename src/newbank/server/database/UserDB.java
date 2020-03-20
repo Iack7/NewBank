@@ -20,19 +20,24 @@ public class UserDB {
   }
 
   private void addTestData() {
-    Customer bhagy = new Customer("bhagy", "secretWord");
+    // Password = "secretWord"
+    Customer bhagy = new Customer("bhagy", "a11263470cc4ebdcf55c16cc8752e9dc");
     bhagy.addAccount(new Account("Main", 1000.0, bhagy));
     addUser(bhagy);
 
-    Customer christina = new Customer("Christina", "PASSWORD!!");
+    // Password = "PASSWORD!!"
+    Customer christina = new Customer("Christina", "4265f8f5fbfe0bfec65323c6207b799e");
     christina.addAccount(new Account("Savings", 1500.0, christina));
     addUser(christina);
 
-    Customer john = new Customer("John", "UniOfBaths");
+    // Password = "UniOfBaths"
+    Customer john = new Customer("John", "4de5731b374a36a3ffbd8933bfd095ef");
     john.addAccount(new Account("Savings", 1500.0, john));
     john.addAccount(new Account("Checking", 250.0, john));
     addUser(john);
-    Banker donald = new Banker("Donald", "Donald");
+
+    // Password = Donald
+    Banker donald = new Banker("Donald", "d6460d863cc7403c4d48eb8682d87784");
     addUser(donald);
   }
 

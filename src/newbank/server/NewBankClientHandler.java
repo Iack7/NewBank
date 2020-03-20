@@ -60,8 +60,12 @@ public class NewBankClientHandler extends Thread {
 
           out.println("4. Show Transactions");
           out.println("\t Usage: SHOWTRANSACTIONS");
+
 			out.println("5. Move Money ");
 			out.println("\t Usage: MOVE <Amount> <From> <To>");
+
+          out.println("6. Change Password");
+          out.println("\t Usage: NEWPASSWORD <currentPassword> <newPassword>");
 
           out.println("0. Logout");
           out.println("\t Usage: LOGOUT");

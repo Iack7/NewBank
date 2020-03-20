@@ -2,3 +2,8 @@
 bin
 *.class
 google-java-format-1.7-all-deps.jar
+.classpath
+.project
+*.iml
+.idea
+.settings
