@@ -25,6 +25,7 @@ public class Customer extends User {
 
   public String accountsToString() {
     String s = "";
+
     for (Account ac : accounts) {
       s += ac.toString() + "\n";
     }
@@ -109,11 +110,9 @@ public class Customer extends User {
   }
 
   public boolean addAccount(Account account) {
-    Boolean exists =
-        this.accounts.stream()
-            .filter(ac -> ac.getAccountName().equals(account.getAccountName()))
-            .findAny()
-            .isPresent();
+    boolean exists =
+            this.accounts.stream()
+                .anyMatch(ac -> ac.getAccountName().equals(account.getAccountName()));
     if (!exists) {
       Account acc = accountDB.addAccount(account);
       accounts.add(acc);

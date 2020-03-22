@@ -15,12 +15,6 @@ public class Account {
 
   private Customer customer;
 
-  public Account(String accountName, double openingBalance) {
-    this.accountName = accountName;
-    this.balance = balance;
-    this.customer = customer;
-  }
-
   @Override
   public int hashCode() {
     return Objects.hash(accountName, accountNumber);
@@ -32,7 +26,7 @@ public class Account {
       Account account = (Account) o;
       return this.accountName != null
           && this.accountName.equals(account.accountName)
-          && this.accountNumber != (account.accountNumber);
+          && this.accountNumber == (account.accountNumber);
     }
     return false;
   }
@@ -178,7 +172,11 @@ public class Account {
     String s = "";
     List<Transaction> transactions = transactionDB.getTransactionsByAccount(this);
 
-    s = this.printTransaction(transactions);
+    if(!transactions.isEmpty()){
+      s = this.printTransaction(transactions);
+    } else {
+      s = "No Transactions found for this account";
+    }
     return s;
   }
 }
