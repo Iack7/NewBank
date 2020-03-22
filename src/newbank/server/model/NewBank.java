@@ -3,6 +3,7 @@ package newbank.server.model;
 import newbank.server.database.AccountDB;
 import newbank.server.database.TransactionDB;
 import newbank.server.database.UserDB;
+import newbank.server.model.roles.Banker;
 import newbank.server.model.roles.Customer;
 import newbank.server.model.roles.User;
 
@@ -34,24 +35,49 @@ public class NewBank {
   public synchronized String processRequest(String userID, String request) {
     User user = users.getUser(userID);
     if (user != null) {
-      if (user instanceof Customer) {
-        Customer customer = (Customer) user;
-        if (request.equals("SHOWMYACCOUNTS")) {
-          return showMyAccounts(customer);
-        } else if (request.startsWith("NEWACCOUNT")) {
-          String accountName = request.substring(request.indexOf(" ") + 1);
-          return makeNewAccount(customer, accountName);
-        } else if (request.startsWith("SHOWTRANSACTIONS")) {
-          return showTransactionsByCustomer(customer, request);
-        } else if (request.startsWith("PAY")) {
-          return initatePay(customer, request);
-        } else if (request.startsWith("MOVE")) {
-          return moveMoney(customer, request.split("\\s+"));
-        } else if (request.startsWith("NEWPASSWORD")) {
-          return setNewPassword(customer, request);
+      try {
+        if (user instanceof Customer) {
+          Customer customer = (Customer) user;
+          if (request.equals("SHOWMYACCOUNTS")) {
+            return showMyAccounts(customer);
+          } else if (request.startsWith("NEWACCOUNT")) {
+            String accountName = request.substring(request.indexOf(" ") + 1);
+            return makeNewAccount(customer, accountName);
+          } else if (request.startsWith("SHOWTRANSACTIONS")) {
+            return showTransactionsByCustomer(customer, request);
+          } else if (request.startsWith("PAY")) {
+            return initatePay(customer, request);
+          } else if (request.startsWith("MOVE")) {
+            return moveMoney(customer, request.split("\\s+"));
+          } else if (request.startsWith("NEWPASSWORD")) {
+            return setNewPassword(customer, request);
+          }
+        } else if (user instanceof Banker) {
+          if (request.startsWith("SHOWMYACCOUNTS")) {
+            String customerId = request.split("\\s+")[1];
+            Customer customer = (Customer) users.getUser(customerId);
+            return showMyAccounts(customer);
+          } else if (request.startsWith("SHOWTRANSACTIONS")) {
+            // SHOWTRANSACTIONS account
+            String customerId = request.split("\\s+")[1];
+            Customer customer = (Customer) users.getUser(customerId);
+            return showTransactionsByCustomer(customer,request);
+          } else if (request.startsWith("SHOW_TRANSACTIONS_BY_ACCOUNT")) {
+            // SHOW_TRANSACTIONS_BY_ACCOUNT account
+            String accountId = request.split("\\s+")[1];
+
+            Account toAccount = this.accountDB.getAccountByNumber(accountId);
+            if(null != toAccount){
+              return showTransactionsByAccount(toAccount);
+            }
+          }
         }
-      } else if (request.startsWith("LOGOUT")) {
-        return "LOGOUT";
+
+        if (request.startsWith("LOGOUT")) {
+          return "LOGOUT";
+        }
+      } catch (Exception e) {
+        return "FAIL";
       }
     }
     return "FAIL";
@@ -286,10 +312,9 @@ public class NewBank {
     try {
       String currentPassword = request.split(" ")[1];
       String newPassword = request.split(" ")[2];
-        return user.setNewPassword(currentPassword, newPassword);
-    } catch(ArrayIndexOutOfBoundsException e) {
+      return user.setNewPassword(currentPassword, newPassword);
+    } catch (ArrayIndexOutOfBoundsException e) {
       return "Failed - incorrect usage (NEWPASSWORD <currentPassword> <newPassword>)";
     }
   }
-
 }
