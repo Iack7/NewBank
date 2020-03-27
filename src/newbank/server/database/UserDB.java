@@ -55,4 +55,10 @@ public class UserDB {
     userId = userId.toLowerCase();
     return users.get(userId);
   }
+
+  public Boolean userExists(String userId) {
+    userId = userId.toLowerCase();
+    return users.containsKey(userId);
+  }
+
 }
