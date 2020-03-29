@@ -6,6 +6,7 @@ import newbank.server.database.UserDB;
 import newbank.server.model.roles.Banker;
 import newbank.server.model.roles.Customer;
 import newbank.server.model.roles.User;
+import newbank.server.marketplace.MarketplaceHandler;
 
 import java.util.Optional;
 import java.util.Set;
@@ -15,6 +16,7 @@ public class NewBank {
   private UserDB users;
   private TransactionDB transactions = TransactionDB.getInstance();
   private AccountDB accountDB = AccountDB.getInstance();
+  private MarketplaceHandler marketplace =  MarketplaceHandler.getInstance();
 
   public NewBank() {
     users = new UserDB();
@@ -51,6 +53,8 @@ public class NewBank {
             return moveMoney(customer, request.split("\\s+"));
           } else if (request.startsWith("NEWPASSWORD")) {
             return setNewPassword(customer, request);
+          } else if (request.startsWith("MARKETPLACE")) {
+            return marketplace.processCommand(customer, request);
           }
         } else if (user instanceof Banker) {
           if (request.startsWith("SHOWMYACCOUNTS")) {
@@ -70,6 +74,8 @@ public class NewBank {
             if(null != toAccount){
               return showTransactionsByAccount(toAccount);
             }
+          } else if (request.startsWith("MARKETPLACE")) {
+            return marketplace.processCommand(user, request);
           }
         }
 
