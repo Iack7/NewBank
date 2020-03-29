@@ -2,13 +2,61 @@
 
 NewBank is a Java application. This document details the protocol for interacting with the NewBank server. A customer enters the command below and sees the messages returned:
 
-Command | Description
---------|------------
-`SHOWMYACCOUNTS` | Returns a list of all the customers accounts along with their current balance e.g. Main: 1000.0 
-`SHOWACCOUNTS <CustomerID>` | Returns all accounts of the customer with the provided customer ID. Only bankers can run this command.
-`NEWACCOUNT <Name>` | e.g. `NEWACCOUNT Savings` returns `SUCCESS` or `FAIL`
-`MOVE <Amount> <From> <To>` | e.g. `MOVE 100 Main Savings` returns `SUCCESS` or `FAIL`
-`PAY <Person/Company> <Ammount>` | e.g. `PAY John 100` returns `SUCCESS` or `FAIL`
+
+####################################
+        For role Customer
+####################################
+SHOWMYACCOUNTS
+Description: Returns a list of all the customers accounts along with their current balance 
+
+NEWACCOUNT <Name>
+Description: Creates a new account. Returns SUCCESS or FAIL
+Example: NEWACCOUNT Savings
+
+SHOWTRANSACTIONS
+Description: List all transactions
+
+MOVE <Amount> <From> <To>
+Description: moves money from one account to another. Returns SUCCESS or FAIL
+Example: MOVE 100 Main Savings 
+
+PAY <Person/Company> <Ammount>
+Description: Pay a person amount of money. Returns SUCCESS or FAIL.
+Example: PAY John 100
+
+NEWPASSWORD <OldPassword> <NewPassword>
+Description: Sets a new password. To set a new password the user has to provide the old password.
+Example: NEWPASSWORD secretWord newSecretWord
+
+LOGOUT
+Description: Logout the customer.
+
+
+####################################
+        For role Banker
+####################################
+
+SHOWMYACCOUNTS <CustomerID>
+Description: Returns a list of all the customers accounts along with their current balance 
+Example: SHOWMYACCOUNTS Thomas
+
+SHOWACCOUNTS <CustomerID>
+Returns all accounts of the customer with the provided customer ID. Only bankers can run this command.
+
+SHOWTRANSACTIONS <CustomerID>
+Description: List all transactions of the chosen customer
+
+SHOW_TRANSACTIONS_BY_ACCOUNT <AccountID>
+Description: List all transactions of the chosen account.
+
+LOGOUT
+Description: Logout the banker.
+
+
+
+
+
+
 
 ## Code Syle
 
