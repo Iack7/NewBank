@@ -9,6 +9,11 @@ public class RequestsDB {
     
 	public RequestsDB() {
 		requests = new ArrayList<>();
-		
 	}
+	
+	
+	public void add(Request request) {
+		requests.add(request);
+	}
+	
 }
