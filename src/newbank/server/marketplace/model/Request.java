@@ -11,4 +11,10 @@ public class Request {
 		this.requestor = requestor;
 		this.requestedAmount = requestedAmount;
 	}
+	
+	public String toString() {
+		return (requestor.getUserID()
+		        + "\t"
+		        + requestedAmount.toString());
+	}
 }

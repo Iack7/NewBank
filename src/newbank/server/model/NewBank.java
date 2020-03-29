@@ -83,7 +83,7 @@ public class NewBank {
           return "LOGOUT";
         }
       } catch (Exception e) {
-        return "FAIL";
+        return e.getMessage();//"FAIL";
       }
     }
     return "FAIL";

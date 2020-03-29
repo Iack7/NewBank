@@ -23,31 +23,33 @@ public class MarketplaceHandler {
 	
 	private void addRequest(User user, Double requestedAmount) {
 		Request request = new Request(user, requestedAmount);
-		requests.add(request);
-		
+		requests.add(request);	
 	}
 	
-	private void removeRequest() {
-		
+	private void removeRequest(int RequestID) {
+		//We still have to implement this function.
 	}
 	
-	private void getRequests() {
-		
+	private void acceptRequest() {
+		//We still have to implement this function.
 	}
+	
 	
 	public String processCommand(User user, String request) {
 		String command = request.split("\\s+")[1];
 		if (command.equals("ADD") ) {
 			double requestedAmount = Double.parseDouble( request.split("\\s+")[2] );
 			addRequest(user, requestedAmount);
-			return "New Request";
+			return "SUCCESS";
 		} else if (command.equals("REMOVE") ) {
-			return "Remove Request";
+			return "Implement a function to remove requests here.";
 		} else if (command.equals("SHOW") ) {
-			return "Show Request";
+			return requests.printRequests();
+		} else if (command.equals("ACCEPT")) {
+			return "Implement a function to accept requests here.";			
 		}
 
-		return "FAILURE";
+		return "FAIL2";
 	}
 	
 }

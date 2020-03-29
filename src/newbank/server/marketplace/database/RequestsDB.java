@@ -16,4 +16,13 @@ public class RequestsDB {
 		requests.add(request);
 	}
 	
+	public String printRequests() {
+		String s = "Request ID\tCustomer\tRequested amount\n";
+		for (int i=0; i<requests.size(); i++) {
+			int ID = i+1;
+			String row = String.format("%d", ID) +"\t\t"+ requests.get(i).toString();
+			s += row+"\n";
+		}
+		return s;
+	}
 }
