@@ -38,7 +38,7 @@ public abstract class User {
   /*
    * A function to convert a password string to an MD5 hash so passwords are not stored in plain text.
    * */
-  public String getMD5Hash(String password) {
+  public static String getMD5Hash(String password) {
     try {
       // Create a new instance of MessageDigest using the MD5 hashing algorithm
       MessageDigest md = MessageDigest.getInstance("MD5");

@@ -70,6 +70,10 @@ public class NewBank {
             if(null != toAccount){
               return showTransactionsByAccount(toAccount);
             }
+          } else if (request.startsWith("CREATENEWUSER")) {
+              String newUserId = request.split("\\s+")[1];
+              String userType = request.split("\\s+")[2];
+              return createNewUser(newUserId, userType);
           }
         }
 
@@ -317,4 +321,29 @@ public class NewBank {
       return "Failed - incorrect usage (NEWPASSWORD <currentPassword> <newPassword>)";
     }
   }
+
+  public String createNewUser(String userId, String userType) {
+    // Check user id is unique
+    if (this.users.userExists(userId)) {
+      return "Failed to create user - user with user id " + userId + " already exists";
+    } else {
+      // Create user with default password "password" and add them to the database
+        if (userType.equals("customer")) {
+           Customer newUser = new Customer(userId, User.getMD5Hash("password"));
+            this.users.addUser(newUser);
+        } else if (userType.equals("banker")) {
+            Banker newUser = new Banker(userId, User.getMD5Hash("password"));
+            this.users.addUser(newUser);
+        } else {
+            return "Failed to create user - Invalid user type given (must be 'customer' or 'banker')";
+        }
+      return "User " + userId + " of type " + userType + " successfully created with default password 'password'";
+    }
+  }
+
+  public UserDB getBankUsers() {
+    return this.users;
+  }
+
+
 }
