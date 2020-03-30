@@ -53,7 +53,7 @@ public class Account {
 
   public boolean credit(double amount) throws Exception {
     boolean completionStatus = false;
-    if (amount > 0) {
+    if (isAmountValid(amount)) {
       this.balance = this.balance + amount;
       completionStatus = true;
     } else {
@@ -65,7 +65,7 @@ public class Account {
   public boolean deduct(double amount) throws Exception {
     boolean transferComplete = false;
 
-    if (this.balance > amount && amount > 0) {
+    if (this.balance > amount && isAmountValid(amount)) {
       this.balance = this.balance - amount;
       transferComplete = true;
     } else {
@@ -77,6 +77,22 @@ public class Account {
       }
     }
     return transferComplete;
+  }
+  
+  private boolean isAmountValid(double amount) {
+	  //Not valid if it is smaller than 0
+	  if (amount<=0) {
+		  return false;
+	  }
+	  
+	  String[] split = Double.toString(amount).split("\\.");
+	  int decimalLength = split[1].length();
+	  
+	  if (decimalLength > 2) {
+		  return false;
+	  }
+	  
+	  return true;
   }
 
   public String getAccountName() {
@@ -103,7 +119,6 @@ public class Account {
     String s = "";
     for (Transaction transaction : transactions) {
       String transactionType;
-      String name;
       if (transaction.getFromAccount() == this
           && transaction.getToAccount().getCustomer()
               != transaction.getFromAccount().getCustomer()) {
