@@ -12,6 +12,10 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
+  <properties>
+    <exec.mainClass>uk.ac.bath.newbank.ExampleClient</exec.mainClass>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
