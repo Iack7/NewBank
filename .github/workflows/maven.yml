@@ -3,11 +3,7 @@
 
 name: Java CI with Maven
 
-on:
-  push:
-    branches: [ master, NBANK-0030 ]
-  pull_request:
-    branches: [ master, NBANK-0030 ]
+on: [push, pull_request]
 
 jobs:
   build:
