@@ -52,6 +52,8 @@ public class Customer extends User {
                 + transaction.getToAccount().getCustomer().getUserID()
                 + "\t| Account Number: "
                 + transaction.getToAccount().getAccountNumber()
+                + "\t| Status: "
+                + transaction.getStatus()
                 + "\t|\t "
                 + "\n";
       } else if (transaction.getToAccount().getCustomer() == this
@@ -70,6 +72,8 @@ public class Customer extends User {
                 + transaction.getFromAccount().getCustomer().getUserID()
                 + "\t| Account Number: "
                 + transaction.getFromAccount().getAccountNumber()
+                + "\t| Status: "
+                + transaction.getStatus()
                 + "\t|\t "
                 + "\n";
       } else if (transaction.getToAccount().getCustomer()
@@ -93,6 +97,8 @@ public class Customer extends User {
                 + "("
                 + transaction.getToAccount().getAccountNumber()
                 + ")"
+                + "\t| Status: "
+                + transaction.getStatus()
                 + "\t|\t "
                 + "\n";
       }
@@ -105,6 +111,22 @@ public class Customer extends User {
     List<Transaction> transactions = transactionDB.getTransactionsByCustomer(this);
 
     s = this.printTransaction(transactions);
+    return s;
+  }
+
+  public String showPendingTransactions() {
+    String s = "";
+    List<Transaction> transactions = transactionDB.getTransactionsByCustomer(this);
+    for (Transaction t : transactions) {
+      if (t.getStatus() == Transaction.Status.COMPLETE) {
+        transactions.remove(t);
+      }
+    }
+    if (transactions.isEmpty()) {
+      s = "No pending transactions.";
+    } else {
+      s = this.printTransaction(transactions);
+    }
     return s;
   }
 

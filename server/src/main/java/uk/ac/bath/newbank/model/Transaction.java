@@ -3,19 +3,29 @@ package uk.ac.bath.newbank.model;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
 
 public class Transaction {
+  public enum Status {
+    PENDING,
+    COMPLETE
+  }
+
   private long transactionId;
   private long time;
   private Account fromAccount;
   private Account toAccount;
   private double amount;
+  private Status status;
+  private String OTP;
 
   public Transaction(Account fromAccount, Account toAccount, double amount) {
     this.fromAccount = fromAccount;
     this.toAccount = toAccount;
     this.amount = amount;
     this.time = Instant.now().toEpochMilli();
+    this.status = Status.PENDING;
+    this.OTP = generateOTP();
   }
 
   public String getTimeString() {
@@ -55,7 +65,9 @@ public class Transaction {
         + "\t|\t "
         + toAccount.getAccountName()
         + "\t|\t "
-        + amount);
+        + amount
+        + "\t|\t "
+        + status);
   }
 
   public long getTransactionId() {
@@ -72,5 +84,23 @@ public class Transaction {
 
   public void setAmount(double amount) {
     this.amount = amount;
+  }
+
+  public Status getStatus() {
+    return status;
+  }
+
+  public void setCompleteStatus() {
+    this.time = Instant.now().toEpochMilli();
+    this.status = Status.COMPLETE;
+  }
+
+  public String getOTP() {
+    return OTP;
+  }
+
+  public String generateOTP() {
+    Random rand = new Random();
+    return String.format("%04d", rand.nextInt(10000));
   }
 }
