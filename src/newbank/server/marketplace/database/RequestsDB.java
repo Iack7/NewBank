@@ -15,6 +15,14 @@ public class RequestsDB {
 	public void add(Request request) {
 		requests.add(request);
 	}
+
+	public Request get(int ID) {
+		return requests.get( ID );
+	}
+
+	public Request remove(int ID) {
+		return requests.remove( ID );
+	}	
 	
 	public String printRequests() {
 		String s = "Request ID\tCustomer\tRequested amount\n";

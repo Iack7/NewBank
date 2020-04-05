@@ -12,9 +12,14 @@ public class Request {
 		this.requestedAmount = requestedAmount;
 	}
 	
+	public User getRequestor() {
+		return requestor;
+	}
+	
 	public String toString() {
 		return (requestor.getUserID()
 		        + "\t"
 		        + requestedAmount.toString());
 	}
+	
 }
