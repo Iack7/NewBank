@@ -31,9 +31,9 @@ public class MarketplaceHandler {
 		Request request = requests.get( RequestID );
 		if (request.getRequestor() == user) {
 			requests.remove( RequestID );
-			return True;			
+			return true;			
 		}
-		return False;
+		return false;
 	}
 	
 	private void acceptRequest() {
@@ -49,15 +49,17 @@ public class MarketplaceHandler {
 			return "SUCCESS";
 		} else if (command.equals("REMOVE") ) {
 			int ID = Integer.parseInt( request.split("\\s+")[2] );
-			removeRequest(user, ID);
-			return "Implement a function to remove requests here.";
+			//return Integer.toString( ID );
+			if (removeRequest(user, ID)) {
+				return "SUCCESS";
+			}
 		} else if (command.equals("SHOW") ) {
 			return requests.printRequests();
 		} else if (command.equals("ACCEPT")) {
 			return "Implement a function to accept requests here.";			
 		}
 
-		return "FAIL2";
+		return "FAIL";
 	}
 	
 }

@@ -17,11 +17,11 @@ public class RequestsDB {
 	}
 
 	public Request get(int ID) {
-		return requests.get( ID );
+		return requests.get( ID-1 );
 	}
 
 	public Request remove(int ID) {
-		return requests.remove( ID );
+		return requests.remove( ID-1 );
 	}	
 	
 	public String printRequests() {
