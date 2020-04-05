@@ -58,10 +58,16 @@ public class NewBankClientHandler extends Thread {
                 "\t \t PAY <AccountFrom> <Customer> <AccountNumber> <Amount>"
                     + "\t\t\t:::From Customer's Selected account to  Recipient's account by AccountNumber ");
 
-            out.println("4. Show Transactions");
+            out.println("4. Show Pending Transfers");
+            out.println("\t Usage: SHOWPENDING");
+
+            out.println("5. Approve Pending Transfer");
+            out.println("\t Usage: APPROVE <TransferID> <OneTimePin>");
+
+            out.println("6. Show Transactions");
             out.println("\t Usage: SHOWTRANSACTIONS");
 
-            out.println("5. Move Money ");
+            out.println("7. Move Money ");
             out.println("\t Usage: MOVE <Amount> <From> <To>");
 
           } else if (user instanceof Banker) {

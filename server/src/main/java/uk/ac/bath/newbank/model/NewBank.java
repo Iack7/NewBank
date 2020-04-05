@@ -43,9 +43,13 @@ public class NewBank {
             String accountName = request.substring(request.indexOf(" ") + 1);
             return makeNewAccount(customer, accountName);
           } else if (request.startsWith("SHOWTRANSACTIONS")) {
-            return showTransactionsByCustomer(customer, request);
+            return showTransactionsByCustomer(customer, request, false);
           } else if (request.startsWith("PAY")) {
             return initatePay(customer, request);
+          } else if (request.startsWith("APPROVE")) {
+            return approveTransfer(customer, request);
+          } else if (request.startsWith("SHOWPENDING")) {
+            return showTransactionsByCustomer(customer, request, true);
           } else if (request.startsWith("MOVE")) {
             return moveMoney(customer, request.split("\\s+"));
           } else if (request.startsWith("NEWPASSWORD")) {
@@ -60,7 +64,7 @@ public class NewBank {
             // SHOWTRANSACTIONS account
             String customerId = request.split("\\s+")[1];
             Customer customer = (Customer) users.getUser(customerId);
-            return showTransactionsByCustomer(customer, request);
+            return showTransactionsByCustomer(customer, request, false);
           } else if (request.startsWith("SHOW_TRANSACTIONS_BY_ACCOUNT")) {
             // SHOW_TRANSACTIONS_BY_ACCOUNT account
             String accountId = request.split("\\s+")[1];
@@ -90,17 +94,26 @@ public class NewBank {
     return customer.accountsToString();
   }
 
-  private String showTransactionsByCustomer(Customer customer, String request) {
+  private String showTransactionsByCustomer(
+      Customer customer, String request, Boolean pendingOnly) {
     String[] params = request.split("\\s");
     if (params.length == 2) {
       Optional<Account> account = customer.getAccount(params[1]);
-      return account.isPresent()
-          ? this.showTransactionsByAccount(account.get())
-          : "Account Not Found";
-
+      if (account.isPresent()) {
+        if (pendingOnly) {
+          return account.get().showPendingTransactions();
+        } else {
+          return this.showTransactionsByAccount(account.get());
+        }
+      } else {
+        return "Account Not Found";
+      }
     } else {
-      return customer.showTransactions();
+      if (pendingOnly) {
+        return customer.showPendingTransactions();
+      }
     }
+    return customer.showTransactions();
   }
 
   private String showTransactionsByAccount(Account account) {
@@ -129,7 +142,7 @@ public class NewBank {
       Optional<Account> toAccount = this.getCustomer(toCustomer).getDefaultAccount();
       if (!fromAccount.equals(toAccount)) {
         try {
-          return this.doTransfer(fromAccount, toAccount, amount);
+          return this.createTransfer(fromAccount, toAccount, amount);
         } catch (Exception e) {
           return "Invalid Entry";
         }
@@ -151,7 +164,7 @@ public class NewBank {
       } else {
         Optional<Account> toAccount = cust.getDefaultAccount();
         try {
-          return this.doTransfer(fromAccount, toAccount, amount);
+          return this.createTransfer(fromAccount, toAccount, amount);
         } catch (Exception e) {
           return "Invalid Entry";
         }
@@ -176,21 +189,56 @@ public class NewBank {
         return "Account not found";
       } else {
         try {
-          return this.doTransfer(fromAccount, toAccount, amount);
+          return this.createTransfer(fromAccount, toAccount, amount);
         } catch (Exception e) {
           return "Invalid Entry";
         }
       }
     }
-
     return "Invalid Entry";
   }
 
-  private String doTransfer(
+  private String createTransfer(
       Optional<Account> fromAccount, Optional<Account> toAccount, String amount) {
     double amountToTransfer = Double.parseDouble(amount);
     if (fromAccount.isPresent() && toAccount.isPresent()) {
-      return transferAmount(fromAccount.get(), toAccount.get(), amountToTransfer);
+      Transaction transaction =
+          new Transaction(fromAccount.get(), toAccount.get(), amountToTransfer);
+      transactions.addTransaction(transaction);
+      System.out.println(
+          "Transaction ID: " + transaction.getTransactionId() + "\tOTP: " + transaction.getOTP());
+      return "Transfer request created and OTP sent";
+    } else {
+      return "Account not present";
+    }
+  }
+
+  private String approveTransfer(Customer customer, String request) {
+    String[] parameters = request.split(" ");
+    try {
+      Transaction transaction = this.transactions.getTransactionById(Long.parseLong(parameters[1]));
+      if (transaction.getOTP().equals(parameters[2])) {
+        if (transaction.getFromAccount().getCustomer() == customer) {
+          return doTransfer(transaction);
+        } else {
+          return "Failed - Transaction must be completed by from account holder";
+        }
+      } else {
+        return "Failed - Incorrect OTP";
+      }
+    } catch (Exception InvalidTransactionID) {
+      return "Failed - Invalid TransactionID";
+    }
+  }
+
+  private String doTransfer(Transaction transaction) {
+    if (accountDB.getAccounts().containsKey(transaction.getFromAccount().getAccountNumber())
+        && accountDB.getAccounts().containsKey(transaction.getToAccount().getAccountNumber())) {
+      String result = transferAmount(transaction);
+      if (result.equals("SUCCESS")) {
+        transaction.setCompleteStatus();
+      }
+      return result;
     } else {
       return "Account not present";
     }
@@ -205,7 +253,10 @@ public class NewBank {
     return cust;
   }
 
-  private String transferAmount(Account fromAccount, Account toAccount, double transferAmount) {
+  private String transferAmount(Transaction transaction) {
+    Account fromAccount = transaction.getFromAccount();
+    Account toAccount = transaction.getToAccount();
+    double transferAmount = transaction.getAmount();
     boolean deductionComplete;
     boolean additionComplete = false;
 
@@ -217,8 +268,6 @@ public class NewBank {
       }
       if (deductionComplete) {
         additionComplete = toAccount.credit(transferAmount);
-        Transaction transaction = new Transaction(fromAccount, toAccount, transferAmount);
-        transactions.addTransaction(transaction);
       }
     } catch (Exception e) {
       return "FAILED";

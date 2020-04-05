@@ -24,6 +24,15 @@ public class TransactionDB {
     return instance;
   }
 
+  public Transaction getTransactionById(long transactionId) {
+    for (Transaction t : this.transactions) {
+      if (t.getTransactionId() == transactionId) {
+        return t;
+      }
+    }
+    return null;
+  }
+
   public void addTransaction(Transaction transaction) {
     transactionId++;
     transaction.setTransactionId(transactionId);

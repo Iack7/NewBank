@@ -10,8 +10,10 @@ NewBank is a Java application. This document details the protocol for interactin
 | `NEWACCOUNT <Name>` | Description: Creates a new account. Returns `SUCCESS` or `FAIL` | Example: `NEWACCOUNT Savings`
 | `SHOWTRANSACTIONS` | Description: List all transactions |
 | `MOVE <Amount> <From> <To>` | Description: moves money from one account to another. Returns `SUCCESS` or `FAIL` | Example: `MOVE 100 Main Savings` 
-| `PAY <Person/Company> <Ammount>` | Description: Pay a person amount of money. Returns `SUCCESS` or `FAIL`. | Example: `PAY John 100`
+| `PAY <Person/Company> <Ammount>` | Description: Pay a person amount of money. Will create a transfer for the transaction that then need to be approved, on success the OTP for approving the transfer will be printed in the server console. | Example: `PAY John 100`
 | `NEWPASSWORD <OldPassword> <NewPassword>` | Description: Sets a new password. To set a new password the user has to provide the old password. | Example: `NEWPASSWORD secretWord newSecretWord`
+| `SHOWPENDING`| Description: Customers can see their pending transfers. 
+| `APPROVE <transactionId> <OTP>` | Description: Approves and performs the transfer, when given the correct OTP. Only the customer of the 'from' account can approve a tranfer. | Example: `APPROVE 1 1234`
 | `LOGOUT` | Description: Logout the customer. |
 
 

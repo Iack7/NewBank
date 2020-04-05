@@ -134,6 +134,8 @@ public class Account {
                 + transaction.getToAccount().getCustomer().getUserID()
                 + "\t| Account Number: "
                 + transaction.getToAccount().getAccountNumber()
+                + "\t| Status: "
+                + transaction.getStatus()
                 + "\t|\t "
                 + "\n";
       } else if (transaction.getToAccount() == this
@@ -152,6 +154,8 @@ public class Account {
                 + transaction.getFromAccount().getCustomer().getUserID()
                 + "\t| Account Number: "
                 + transaction.getFromAccount().getAccountNumber()
+                + "\t| Status: "
+                + transaction.getStatus()
                 + "\t|\t "
                 + "\n";
       } else if (transaction.getToAccount().getCustomer()
@@ -175,6 +179,8 @@ public class Account {
                 + "("
                 + transaction.getToAccount().getAccountNumber()
                 + ")"
+                + "\t| Status: "
+                + transaction.getStatus()
                 + "\t|\t "
                 + "\n";
       }
@@ -188,6 +194,27 @@ public class Account {
 
     if (!transactions.isEmpty()) {
       s = this.printTransaction(transactions);
+    } else {
+      s = "No Transactions found for this account";
+    }
+    return s;
+  }
+
+  public String showPendingTransactions() {
+    String s = "";
+    List<Transaction> transactions = transactionDB.getTransactionsByAccount(this);
+
+    if (!transactions.isEmpty()) {
+      for (Transaction t : transactions) {
+        if (t.getStatus() == Transaction.Status.COMPLETE) {
+          transactions.remove(t);
+        }
+      }
+      if (transactions.isEmpty()) {
+        s = "No pending transactions for this account.";
+      } else {
+        s = this.printTransaction(transactions);
+      }
     } else {
       s = "No Transactions found for this account";
     }
