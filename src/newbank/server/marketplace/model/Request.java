@@ -1,19 +1,23 @@
 package newbank.server.marketplace.model;
 
-import newbank.server.model.roles.User;
+import newbank.server.model.roles.Customer;
 
 public class Request {
 
-	User requestor;
+	Customer requestor;
 	Double requestedAmount;
     
-	public Request(User requestor, Double requestedAmount) {
+	public Request(Customer requestor, Double requestedAmount) {
 		this.requestor = requestor;
 		this.requestedAmount = requestedAmount;
 	}
 	
-	public User getRequestor() {
+	public Customer getRequestor() {
 		return requestor;
+	}
+	
+	public Double getRequestedAmount() {
+		return requestedAmount;
 	}
 	
 	public String toString() {
