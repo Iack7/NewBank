@@ -314,8 +314,7 @@ public class NewBank {
     final String from = command[2];
     final String to = command[3];
 
-    // TODO: The from and to if detected that there are the same will return SUCCESS, we have to see
-    // if we want to allow this.
+    // TODO: When FROM and TO are the same, should we allow this as SUCCESS?
     if (from.equals(to)) {
       System.err.println("MOVE command: The 'from' and 'to' are the same, no move is performed!");
       return "SUCCESS";
