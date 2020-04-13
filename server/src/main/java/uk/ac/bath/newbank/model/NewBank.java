@@ -2,6 +2,7 @@ package uk.ac.bath.newbank.model;
 
 import java.util.Optional;
 import java.util.Set;
+import uk.ac.bath.newbank.MarketplaceHandler;
 import uk.ac.bath.newbank.database.AccountDB;
 import uk.ac.bath.newbank.database.TransactionDB;
 import uk.ac.bath.newbank.database.UserDB;
@@ -14,6 +15,7 @@ public class NewBank {
   private UserDB users;
   private TransactionDB transactions = TransactionDB.getInstance();
   private AccountDB accountDB = AccountDB.getInstance();
+  private MarketplaceHandler marketplace = MarketplaceHandler.getInstance();
 
   public NewBank() {
     users = new UserDB();
@@ -54,6 +56,8 @@ public class NewBank {
             return moveMoney(customer, request.split("\\s+"));
           } else if (request.startsWith("NEWPASSWORD")) {
             return setNewPassword(customer, request);
+          } else if (request.startsWith("MARKETPLACE")) {
+            return marketplace.processCommand(customer, request);
           }
         } else if (user instanceof Banker) {
           if (request.startsWith("SHOWMYACCOUNTS")) {
@@ -84,7 +88,7 @@ public class NewBank {
           return "LOGOUT";
         }
       } catch (Exception e) {
-        return "FAIL";
+        return e.getMessage(); // "FAIL";
       }
     }
     return "FAIL";
